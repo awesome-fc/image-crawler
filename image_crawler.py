@@ -20,23 +20,23 @@ def handler(event, context):
     evt = json.loads(event)
     url = evt['url']
     logger.info('url:' + url)
-    endpoint = 'oss-cn-< your regin>.aliyuncs.com'
+    endpoint = 'oss-cn-< your region>.aliyuncs.com'
     creds = context.credentials
     auth = oss2.StsAuth(creds.accessKeyId, creds.accessKeySecret, creds.securityToken)
     bucket = oss2.Bucket(auth, endpoint, '<your bucket name>')
-    try:
-        html = getHtml(url)
-        img_list = getImg(html)
-        for item in img_list:
-            logging.info(item)
-            # 获取每一张图片
-            pic = urllib.urlopen(item)
-            # 以时间毫秒为key，把所有的图片存储到oss中的bucket里
-            bucket.put_object(str(datetime.datetime.now().microsecond) + '.jpg', pic.read())
-    except Exception, e:
-        logging.error(e)
-        return 'error'
-    return 'ok'
+
+    html = getHtml(url)
+    img_list = getImg(html)
+    count = 0
+    for item in img_list:
+        count += 1
+        logging.info(item)
+        # 获取每一张图片
+        pic = urllib.urlopen(item)
+        # 以时间毫秒为key，把所有的图片存储到oss中的bucket里
+        bucket.put_object(str(datetime.datetime.now().microsecond) + '.jpg', pic)
+
+    return 'download success, total pictures:' + count
 
 
 # 获取url内容

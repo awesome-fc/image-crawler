@@ -8,7 +8,12 @@ this function service can download all *.jpg file. from privided url.
 * create one function without trigger. setup function compute service :https://help.aliyun.com/document_detail/51733.html
 
 How to trigger:
+* create local folder: code , and download image_crawler.py into into this folder.
 * use fcli client.
-* cd service & function.
-* invk crawler_image -s "{\"url\":\"http://www.xxxx.com\"}"
-
+'''
+    >> fcli shell
+    >> mks demo
+    >> cd demo
+    >> mkf image_crawler -h image_crawler.handler -d code -t python2.7
+    >> invk crawler_image -s "{\"url\":\"http://www.xxxx.com\"}"
+'''
